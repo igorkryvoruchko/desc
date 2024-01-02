@@ -8,10 +8,13 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: 'default'
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
     networks:
       - tutorial
-  
+
   # phpmyadmin container
   phpmyadmin:
     image: phpmyadmin
@@ -39,8 +42,12 @@ services:
     networks:
       - tutorial
 
+
+
 networks:
   tutorial:
 
 volumes:
   db-data:
+
+
