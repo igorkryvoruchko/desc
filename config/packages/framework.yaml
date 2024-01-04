@@ -10,11 +10,17 @@ framework:
         handler_id: null
         cookie_secure: auto
         cookie_samesite: lax
-
+    form:
+        csrf_protection:
+            enabled: false
     #esi: true
     #fragments: true
     php_errors:
         log: true
+    serializer:
+        default_context:
+            enable_max_depth: true
+            yaml_indentation: 2
 
 when@test:
     framework:
