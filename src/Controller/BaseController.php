@@ -8,12 +8,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BaseController extends AbstractController
 {
-    protected function response($data = [], $errors = []): JsonResponse
+    protected function response($data = [], $errors = [], $status = 200, $headers = [], $context = []): JsonResponse
     {
-        return $this->json([
-            'data' => $data,
-            'errors' => $errors
-        ]);
+        return $this->json(
+            data: [
+                'data' => $data,
+                'errors' => $errors
+            ],
+            status: $status,
+            headers: $headers,
+            context: $context);
     }
     protected function getErrorsFromForm(FormInterface $form): array
     {

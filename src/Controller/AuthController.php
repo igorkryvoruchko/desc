@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 
 class AuthController extends BaseController
 {
@@ -35,7 +34,8 @@ class AuthController extends BaseController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->response(data: $user);
+            return $this->response(data: $user, context: (new ObjectNormalizerContextBuilder())
+                ->withGroups('view')->toArray());
         }
 
         return $this->response(errors: $this->getErrorsFromForm($form));
