@@ -5,10 +5,17 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 
 class BaseController extends AbstractController
 {
-    protected function response($data = [], $errors = [], $status = 200, $headers = [], $context = []): JsonResponse
+    protected function response(
+        mixed $data = [],
+        array $errors = [],
+        int $status = 200,
+        array $headers = [],
+        array $context = []
+    ): JsonResponse
     {
         return $this->json(
             data: [
@@ -17,7 +24,7 @@ class BaseController extends AbstractController
             ],
             status: $status,
             headers: $headers,
-            context: $context);
+            context: count($context) > 0 ? (new ObjectNormalizerContextBuilder())->withGroups($context)->toArray() : []);
     }
     protected function getErrorsFromForm(FormInterface $form): array
     {
