@@ -3,11 +3,11 @@
     <!-- text -->
     <p>
       <input type="text" v-model="email" placeholder="Email" />
-      {{ msg }}
+      {{ email }}
     </p>
     <p>
       <input type="text" v-model="password" placeholder="Password" />
-      {{ msg }}
+      {{ email }}
     </p>
     <!-- checkbox -->
     <p>
@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import UserRepository from "@/repositories/UserRepository";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   el: "#demo",
   data: function () {
@@ -31,12 +32,17 @@ export default {
       checked: false,
     };
   },
+  computed: {
+    ...mapGetters(["user"]),
+  },
   methods: {
+    ...mapActions(["getUserData"]),
     signIn() {
-      UserRepository.signIn({
+      let data = {
         email: this.email,
         password: this.password,
-      });
+      };
+      this.$store.dispatch("getUserData", data);
     },
   },
 };
