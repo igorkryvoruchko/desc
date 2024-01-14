@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\AuthSignUpType;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,11 +15,16 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AuthController extends BaseController
 {
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/signup', name: 'sign_up', methods: ['POST'])]
     public function signUp(
         Request $request,
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        JWTTokenManagerInterface $JWTManager
     ): JsonResponse
     {
         $user = new User();
@@ -33,7 +41,10 @@ class AuthController extends BaseController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->response(data: $user, context: ['view']);
+            return $this->response(data: [
+                'user' => $user,
+                'token' => $JWTManager->create($user)
+            ], context: ['view']);
         }
 
         return $this->response(errors: $this->getErrorsFromForm($form), status: 401);

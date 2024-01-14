@@ -16,7 +16,8 @@ class AuthenticationFailureListener
         $data = [
             'data' => [],
             'errors' => [
-                'form' => ['Bad credentials, please verify that your email/password are correctly set']
+                'email' => ['Bad credentials, please verify that your email are correctly set'],
+                'password' => ['Bad credentials, please verify that your password are correctly set']
             ]
         ];
 

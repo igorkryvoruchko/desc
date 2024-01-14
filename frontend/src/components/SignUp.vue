@@ -1,25 +1,38 @@
 <template>
-  <form id="demo" v-on:submit.prevent="signUp">
-    <!-- text -->
-    <p>
-      <input type="text" required v-model="name" placeholder="User Name" />
-      {{ errorMessages.name }}
-    </p>
-    <p>
-      <input type="email" required v-model="email" placeholder="Email" />
-      {{ errorMessages.email }}
-    </p>
-    <p>
-      <input type="password" v-model="password" placeholder="Password" />
-      {{ errorMessages.password }}
-    </p>
-    <p>
-      <input type="password" placeholder="Password Confirm" />
-    </p>
-    <p>
-      <button type="submit">Sign Up</button>
-    </p>
-  </form>
+  <v-sheet width="400" class="mx-auto mt-9">
+    <v-card-actions class="justify-center">
+      <h2>Sign Up</h2>
+    </v-card-actions>
+    <v-form id="demo" @submit.prevent="signUp">
+      <p>
+        <v-text-field
+          type="name"
+          v-model="name"
+          label="Name"
+          :error-messages="errorMessages.name"
+        />
+      </p>
+      <p>
+        <v-text-field
+          type="email"
+          v-model="email"
+          label="Email"
+          :error-messages="errorMessages.email"
+        />
+      </p>
+      <p>
+        <v-text-field
+          type="password"
+          v-model="password"
+          label="Password"
+          :error-messages="errorMessages.password"
+        />
+      </p>
+      <v-card-actions class="justify-center">
+        <v-btn type="submit">Sign Up</v-btn>
+      </v-card-actions>
+    </v-form>
+  </v-sheet>
 </template>
 
 <script>
@@ -40,17 +53,21 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getUserData"]),
+    ...mapActions(["setUserData"]),
     signUp() {
       let data = {
         name: this.name,
         email: this.email,
         password: this.password,
       };
-      userRepository.signUp(data).catch((error) => {
-        console.log(error);
-        this.errorMessages = error.response.data.errors;
-      });
+      userRepository
+        .signUp(data)
+        .then((response) => {
+          this.setUserData(response);
+        })
+        .catch((error) => {
+          this.errorMessages = error.response.data.errors;
+        });
     },
   },
 };

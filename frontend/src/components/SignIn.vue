@@ -1,22 +1,30 @@
 <template>
-  <form id="demo" v-on:submit.prevent="signIn">
-    <!-- text -->
-    <p>{{ errorMessage }}</p>
-    <p>
-      <input type="email" required v-model="email" placeholder="Email" />
-    </p>
-    <p>
-      <input type="password" v-model="password" placeholder="Password" />
-    </p>
-    <!-- checkbox -->
-    <p>
-      <input type="checkbox" v-model="checked" />
-      {{ checked ? "yes" : "no" }}
-    </p>
-    <p>
-      <button type="submit">Sign In</button>
-    </p>
-  </form>
+  <v-sheet width="400" class="mx-auto mt-9">
+    <v-card-actions class="justify-center">
+      <h2>Sign In</h2>
+    </v-card-actions>
+    <v-form id="demo" @submit.prevent="signIn">
+      <p>
+        <v-text-field
+          type="email"
+          v-model="email"
+          label="Email"
+          :error-messages="errorMessages.email"
+        />
+      </p>
+      <p>
+        <v-text-field
+          type="password"
+          v-model="password"
+          label="Password"
+          :error-messages="errorMessages.password"
+        />
+      </p>
+      <v-card-actions class="justify-center">
+        <v-btn type="submit">Sign In</v-btn>
+      </v-card-actions>
+    </v-form>
+  </v-sheet>
 </template>
 
 <script>
@@ -28,8 +36,11 @@ export default {
     return {
       email: null,
       password: null,
-      checked: false,
-      errorMessage: "",
+      errorMessages: {
+        form: null,
+        email: null,
+        password: null,
+      },
     };
   },
   computed: {
@@ -43,7 +54,7 @@ export default {
         password: this.password,
       };
       this.getUserData(data).catch((error) => {
-        this.errorMessage = error.response.data.message;
+        this.errorMessages = error.response.data.errors;
       });
     },
   },

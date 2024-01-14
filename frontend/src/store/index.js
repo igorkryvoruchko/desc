@@ -42,6 +42,10 @@ export default createStore({
         return response.data.data;
       });
     },
+    setUserData({ commit }, response) {
+      commit("setUserToState", response.data.data.user);
+      commit("setTokenToState", response.data.data.token);
+    },
     signOutAction({ commit }) {
       commit("signOut");
     },
