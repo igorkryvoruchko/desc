@@ -36,7 +36,7 @@ class AuthController extends BaseController
             return $this->response(data: $user, context: ['view']);
         }
 
-        return $this->response(errors: $this->getErrorsFromForm($form));
+        return $this->response(errors: $this->getErrorsFromForm($form), status: 401);
     }
 
 

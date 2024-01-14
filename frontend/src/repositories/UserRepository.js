@@ -5,6 +5,6 @@ export default {
     return Client.post("login_check", payload);
   },
   signUp(payload) {
-    return Client.put("signup", payload);
+    return Client.post("signup", payload);
   },
 };

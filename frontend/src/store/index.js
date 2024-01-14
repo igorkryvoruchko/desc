@@ -1,14 +1,13 @@
 import { createStore } from "vuex";
 import UserRepository from "@/repositories/UserRepository";
+import VuexPersistence from "vuex-persist";
 
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+});
 export default createStore({
   state: {
-    user: {
-      id: null,
-      name: null,
-      email: null,
-      roles: [],
-    },
+    user: {},
     token: null,
   },
   getters: {
@@ -26,6 +25,13 @@ export default createStore({
     setTokenToState(state, token) {
       state.token = token;
     },
+    signOut(state) {
+      state.token = null;
+      localStorage.setItem("token", null);
+
+      state.user = {};
+      localStorage.setItem("user", "{}");
+    },
   },
   actions: {
     getUserData({ commit }, data) {
@@ -36,6 +42,10 @@ export default createStore({
         return response.data.data;
       });
     },
+    signOutAction({ commit }) {
+      commit("signOut");
+    },
   },
   modules: {},
+  plugins: [vuexLocal.plugin],
 });

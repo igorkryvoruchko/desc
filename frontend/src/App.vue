@@ -3,9 +3,24 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
     {{ $store.state.user.name }}
+    <button v-if="$store.state.token" @click="signOut">Sign Out</button>
   </nav>
   <router-view />
 </template>
+
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  name: "App",
+  methods: {
+    ...mapActions(["signOutAction"]),
+    signOut() {
+      this.signOutAction();
+    },
+  },
+};
+</script>
 
 <style>
 #app {

@@ -11,9 +11,8 @@ class AuthenticationSuccessListener
         $event->setData([
             'data' => [
                 'user' => [
-                    'id' => $user->getUserIdentifier(),
+                    'id' => $user->getId(),
                     'name' => $user->getName(),
-                    'email' => $user->getEmail(),
                     'roles' => $user->getRoles()
                 ],
                 'token' => $event->getData()['token'],

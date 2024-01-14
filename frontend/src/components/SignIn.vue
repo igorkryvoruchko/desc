@@ -1,13 +1,12 @@
 <template>
   <form id="demo" v-on:submit.prevent="signIn">
     <!-- text -->
+    <p>{{ errorMessage }}</p>
     <p>
-      <input type="text" v-model="email" placeholder="Email" />
-      {{ email }}
+      <input type="email" required v-model="email" placeholder="Email" />
     </p>
     <p>
-      <input type="text" v-model="password" placeholder="Password" />
-      {{ email }}
+      <input type="password" v-model="password" placeholder="Password" />
     </p>
     <!-- checkbox -->
     <p>
@@ -30,6 +29,7 @@ export default {
       email: null,
       password: null,
       checked: false,
+      errorMessage: "",
     };
   },
   computed: {
@@ -42,7 +42,9 @@ export default {
         email: this.email,
         password: this.password,
       };
-      this.$store.dispatch("getUserData", data);
+      this.getUserData(data).catch((error) => {
+        this.errorMessage = error.response.data.message;
+      });
     },
   },
 };
