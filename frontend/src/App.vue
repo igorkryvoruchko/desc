@@ -16,9 +16,10 @@
 
         <v-spacer></v-spacer>
         <h3 class="home-link">{{ this.user.name }}</h3>
-        <v-btn v-if="this.user.name" @click="signOutAction" class="home-link">
+        <v-btn v-if="this.user.name" @click="signOutAction" color="#FFFFFF">
           Sign Out
         </v-btn>
+        <v-btn href="/sign-in" v-else color="#FFFFFF">Sign In</v-btn>
       </v-toolbar>
       <router-view />
     </v-main>

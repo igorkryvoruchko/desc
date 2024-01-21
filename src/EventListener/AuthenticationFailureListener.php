@@ -5,9 +5,14 @@ namespace App\EventListener;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationFailureEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AuthenticationFailureListener
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+    }
+
     /**
      * @param AuthenticationFailureEvent $event
      */
@@ -16,8 +21,8 @@ class AuthenticationFailureListener
         $data = [
             'data' => [],
             'errors' => [
-                'email' => ['Bad credentials, please verify that your email are correctly set'],
-                'password' => ['Bad credentials, please verify that your password are correctly set']
+                'email' => [$this->translator->trans('sign-in-error-email')],
+                'password' => [$this->translator->trans('sign-in-error-password')]
             ]
         ];
 

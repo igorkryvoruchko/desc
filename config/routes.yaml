@@ -6,8 +6,12 @@ controllers:
 
 api:
     resource: ../src/Controller/
-    prefix: /api
+    prefix: /api/{_locale}
     type: attribute
+    requirements:
+        _locale: '%locales%'
 
 api_login_check:
-    path: /api/login_check
+    path: /api/{_locale}/login_check
+    requirements:
+        _locale: '%locales%'
